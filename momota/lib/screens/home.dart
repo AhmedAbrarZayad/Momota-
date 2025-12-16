@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:momota/shared/searchbar.dart';
 import 'package:momota/strings/strings.dart';
-
+import 'package:momota/shared/card.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -11,11 +12,12 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
-  @override
+@override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final width = size.width;
     final height = size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppStrings.appTitle),
@@ -24,15 +26,46 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          color: Colors.white
+        decoration: const BoxDecoration(color: Colors.white),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Hero(width: width, height: height * 0.5),
+              // REMOVED Expanded widget here
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: StaggeredGrid.count(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  children: [
+                    StaggeredGridTile.fit(
+                      crossAxisCellCount: 1,
+                      child: CustomCard(AppStrings.pregnancyTracker),
+                    ),
+                    StaggeredGridTile.fit(
+                      crossAxisCellCount: 1,
+                      child: CustomCard(AppStrings.nutritionRecommender),
+                    ),
+                    StaggeredGridTile.fit(
+                      crossAxisCellCount: 1,
+                      child: CustomCard(AppStrings.symptomChecker),
+                    ),
+                    StaggeredGridTile.fit(
+                      crossAxisCellCount: 1,
+                      child: CustomCard(AppStrings.healthWorkerAssistant),
+                    ),
+                    StaggeredGridTile.fit(
+                      crossAxisCellCount: 2,
+                      child: CustomCard(AppStrings.communityDashboard),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
-        child: Column(
-          children: [
-            Hero(width: width, height: height*0.5),
-          ],
-        )
-      )
+      ),
     );
   }
 }
